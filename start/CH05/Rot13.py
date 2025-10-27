@@ -10,7 +10,7 @@ def rot13(text,shift):
             result += chr((ord(char) - base + shift) % 26 + base)
         else:
             result += char
-        return result
+    return result
 message = input("Please input your text to rotate, no spaces or numbers: ")
 shift = 13
 encrypted = rot13(message, shift)
