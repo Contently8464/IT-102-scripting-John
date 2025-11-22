@@ -1,0 +1,50 @@
+'''
+Percentage of Traffic from a Single IP:
+
+Identify the IP address responsible for the most traffic.
+Calculate the percentage of requests coming from this IP relative to the total traffic.
+Hint: Split each log line to access the IP address, usually found at the start of the line.
+'''
+
+#By John Gurney
+#Import python modules
+import re
+from collections import Counter
+
+#define log file
+log_file = "/home/ripple1074/IT-102-scripting-John/start/CH07/access.log" 
+
+#load data
+with open(log_file, "r") as f:
+    log_lines = f.readlines()
+
+#setup regex pattern
+client_pattern = r'(^\S+\.[\S+\.]+\S+)\s'
+#Count client frequencies
+client_list = []
+
+#loop through each line, find ip address, and add to list
+for line in log_lines:
+    match = re.search(client_pattern, line)
+    if match:
+        client_address = match.group(1)
+        client_list.append(client_address)
+
+#use counter to count the frequency of each ip
+client_counts = Counter(client_list)
+
+#Identify top ip and calculate traffic percentage
+total_requests = len(log_lines)
+#find ip with maximum count
+most_common_client = client_counts.most_common(1)
+
+top_client, max_traffic = most_common_client[0]
+
+# calculate percentage
+percentage = (max_traffic / total_requests) * 100
+
+# print results
+print("Results")
+print(f"Total requests analyzed:  {total_requests}")
+print(f"Client responsible for most traffic: {top_client}")
+print(f"Percentage of total traffic: {percentage:.2f}%")
